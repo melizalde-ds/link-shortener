@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace link_shortner.Migrations
 {
     /// <inheritdoc />
-    public partial class AddLinkTable : Migration
+    public partial class AddLinksTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

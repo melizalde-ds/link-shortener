@@ -9,8 +9,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace link_shortner.Migrations
 {
-    [DbContext(typeof(PostgresDB))]
-    partial class PostgresDBModelSnapshot : ModelSnapshot
+    [DbContext(typeof(PgDB))]
+    partial class PgDBModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

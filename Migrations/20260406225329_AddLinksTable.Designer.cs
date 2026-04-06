@@ -10,9 +10,9 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace link_shortner.Migrations
 {
-    [DbContext(typeof(PostgresDB))]
-    [Migration("20260406223311_AddLinkTable")]
-    partial class AddLinkTable
+    [DbContext(typeof(PgDB))]
+    [Migration("20260406225329_AddLinksTable")]
+    partial class AddLinksTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

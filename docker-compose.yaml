@@ -9,7 +9,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
@@ -29,4 +29,3 @@ volumes:
   redis_data:
     driver: local
   db_data:
-    driver: local
