@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace link_shortner.Migrations
 {
     [DbContext(typeof(PgDB))]
-    [Migration("20260406225329_AddLinksTable")]
+    [Migration("20260406233541_AddLinksTable")]
     partial class AddLinksTable
     {
         /// <inheritdoc />

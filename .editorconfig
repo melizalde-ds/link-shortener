@@ -30,13 +30,6 @@ indent_size = 2
 trim_trailing_whitespace = false
 
 ###############################
-# Migrations - skip all analysis
-###############################
-[**/Migrations/*.cs]
-generated_code = true
-dotnet_analyzer_diagnostic.severity = none
-
-###############################
 # C# files
 ###############################
 [*.cs]
