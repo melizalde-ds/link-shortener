@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace link_shortner.Migrations
 {
     [DbContext(typeof(PgDB))]
-    [Migration("20260406233541_AddLinksTable")]
-    partial class AddLinksTable
+    [Migration("20260407153916_AddLinkTable")]
+    partial class AddLinkTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,21 +26,19 @@ namespace link_shortner.Migrations
 
             modelBuilder.Entity("LinkShortener.Models.Link", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<string>("ShortUrl")
+                        .HasColumnType("text")
+                        .HasJsonPropertyName("short_url");
 
                     b.Property<string>("OriginalUrl")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasJsonPropertyName("original_url");
 
-                    b.Property<string>("ShortUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.HasKey("ShortUrl");
 
-                    b.HasKey("Id");
+                    b.HasIndex("ShortUrl")
+                        .IsUnique();
 
                     b.ToTable("Links");
                 });

@@ -23,21 +23,19 @@ namespace link_shortner.Migrations
 
             modelBuilder.Entity("LinkShortener.Models.Link", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<string>("ShortUrl")
+                        .HasColumnType("text")
+                        .HasJsonPropertyName("short_url");
 
                     b.Property<string>("OriginalUrl")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasJsonPropertyName("original_url");
 
-                    b.Property<string>("ShortUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.HasKey("ShortUrl");
 
-                    b.HasKey("Id");
+                    b.HasIndex("ShortUrl")
+                        .IsUnique();
 
                     b.ToTable("Links");
                 });
