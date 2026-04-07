@@ -13,12 +13,10 @@ namespace LinkShortener.Service;
 /// </summary>
 /// <param name="redis">The Redis cache instance for fast lookups.</param>
 /// <param name="db">The PostgreSQL database context for persistent storage.</param>
-/// <param name="counter">The counter used to generate unique short URLs.</param>
-public class LinkService(IDistributedCache redis, AppDbContext db, Counter counter)
+public class LinkService(IDistributedCache redis, AppDbContext db)
 {
     private readonly IDistributedCache _redis = redis;
     private readonly AppDbContext _db = db;
-    private readonly Counter _counter = counter;
 
     private static DistributedCacheEntryOptions CacheOptions =>
         new DistributedCacheEntryOptions()
@@ -58,7 +56,7 @@ public class LinkService(IDistributedCache redis, AppDbContext db, Counter count
     /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation.</returns>
     public async Task<LinkResponseData> CreateLinkAsync(string originalUrl)
     {
-        var id = _counter.GetNext();
+        var id = await _db.Database.SqlQueryRaw<long>("SELECT nextval('\"LinkSequence\"') AS \"Value\"").FirstAsync();
         var shortUrl = Encoder.GetEncoded(id);
         var link = new Link
         {

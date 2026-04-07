@@ -9,7 +9,7 @@ public class Link
 {
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
     [JsonPropertyName("id")]
-    public ulong Id { get; set; }
+    public long Id { get; set; }
 
     [JsonPropertyName("original_url")]
     public required string OriginalUrl { get; set; }

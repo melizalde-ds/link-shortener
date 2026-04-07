@@ -14,7 +14,6 @@ builder.Services.AddStackExchangeRedisCache(options =>
     options.InstanceName = "LinkShortener:";
 });
 builder.Services.AddScoped<LinkService>();
-builder.Services.AddSingleton<Counter>();
 
 var app = builder.Build();
 

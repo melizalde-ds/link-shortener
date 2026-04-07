@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace link_shortner.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class PgDBModelSnapshot : ModelSnapshot
+    partial class AppDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -21,10 +21,15 @@ namespace link_shortner.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.HasSequence("LinkSequence")
+                .StartsAt(0L)
+                .HasMin(0L)
+                .HasMax(9223372036854775807L);
+
             modelBuilder.Entity("LinkShortener.Models.Link", b =>
                 {
-                    b.Property<decimal>("Id")
-                        .HasColumnType("numeric(20,0)")
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
                         .HasJsonPropertyName("id");
 
                     b.Property<string>("OriginalUrl")

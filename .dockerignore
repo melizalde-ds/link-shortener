@@ -24,3 +24,6 @@ appsettings.Development.json
 **/Dockerfile*
 **/.dockerignore
 **/docker-compose*
+
+# Local configuration files
+**/check.sh
