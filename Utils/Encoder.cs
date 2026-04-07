@@ -3,7 +3,7 @@ namespace LinkShortener.Utils;
 public static class Encoder
 {
     private const string Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    private const int Length = 5;
+    private const int Length = 6;
 
     public static string GetEncoded(ulong number)
     {
