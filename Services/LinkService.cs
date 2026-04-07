@@ -1,7 +1,7 @@
 using System.Text.Json;
+using LinkShortener.Data;
 using LinkShortener.DTOs;
 using LinkShortener.Models;
-using LinkShortener.Postgres;
 using LinkShortener.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
@@ -14,10 +14,10 @@ namespace LinkShortener.Service;
 /// <param name="redis">The Redis cache instance for fast lookups.</param>
 /// <param name="db">The PostgreSQL database context for persistent storage.</param>
 /// <param name="counter">The counter used to generate unique short URLs.</param>
-public class LinkService(IDistributedCache redis, PgDB db, Counter counter)
+public class LinkService(IDistributedCache redis, AppDbContext db, Counter counter)
 {
     private readonly IDistributedCache _redis = redis;
-    private readonly PgDB _db = db;
+    private readonly AppDbContext _db = db;
     private readonly Counter _counter = counter;
 
     private static DistributedCacheEntryOptions CacheOptions =>

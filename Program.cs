@@ -1,11 +1,11 @@
+using LinkShortener.Data;
 using LinkShortener.DTOs;
-using LinkShortener.Postgres;
 using LinkShortener.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<PgDB>(options =>
+builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 builder.Services.AddStackExchangeRedisCache(options =>
