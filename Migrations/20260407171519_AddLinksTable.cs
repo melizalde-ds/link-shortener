@@ -5,7 +5,7 @@
 namespace link_shortner.Migrations
 {
     /// <inheritdoc />
-    public partial class AddLinkTable : Migration
+    public partial class AddLinksTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -14,12 +14,13 @@ namespace link_shortner.Migrations
                 name: "Links",
                 columns: table => new
                 {
-                    ShortUrl = table.Column<string>(type: "text", nullable: false),
-                    OriginalUrl = table.Column<string>(type: "text", nullable: false)
+                    Id = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    OriginalUrl = table.Column<string>(type: "text", nullable: false),
+                    ShortUrl = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Links", x => x.ShortUrl);
+                    table.PrimaryKey("PK_Links", x => x.Id);
                 });
 
             migrationBuilder.CreateIndex(

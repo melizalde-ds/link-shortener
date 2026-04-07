@@ -18,11 +18,16 @@ builder.Services.AddSingleton<Counter>();
 
 var app = builder.Build();
 
-app.MapGet("/{url}", async (LinkService linkService, string url) => await linkService.GetLinkAsync(url));
+app.MapGet("/{url}", async (LinkService linkService, string url) =>
+{
+    var link = await linkService.GetLinkAsync(url);
+    return link != null ? Results.Redirect(link.OriginalUrl) : Results.NotFound();
+
+});
 
 app.MapPost(
     "/shorten",
-    async ([FromBody] LinkDto linkDto, LinkService service) =>
+    async ([FromBody] LinkRequestData linkDto, LinkService service) =>
     {
         var link = await service.CreateLinkAsync(linkDto.OriginalUrl);
         return Results.Ok(link);

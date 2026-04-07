@@ -23,16 +23,21 @@ namespace link_shortner.Migrations
 
             modelBuilder.Entity("LinkShortener.Models.Link", b =>
                 {
-                    b.Property<string>("ShortUrl")
-                        .HasColumnType("text")
-                        .HasJsonPropertyName("short_url");
+                    b.Property<decimal>("Id")
+                        .HasColumnType("numeric(20,0)")
+                        .HasJsonPropertyName("id");
 
                     b.Property<string>("OriginalUrl")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasJsonPropertyName("original_url");
 
-                    b.HasKey("ShortUrl");
+                    b.Property<string>("ShortUrl")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasJsonPropertyName("short_url");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("ShortUrl")
                         .IsUnique();

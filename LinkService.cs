@@ -1,4 +1,5 @@
 using System.Text.Json;
+using LinkShortener.DTOs;
 using LinkShortener.Models;
 using LinkShortener.Postgres;
 using LinkShortener.Utils;
@@ -19,6 +20,11 @@ public class LinkService(IDistributedCache redis, PgDB db, Counter counter)
     private readonly PgDB _db = db;
     private readonly Counter _counter = counter;
 
+    private DistributedCacheEntryOptions CacheOptions => new DistributedCacheEntryOptions
+    {
+        AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1)
+    };
+
     /// <summary>
     /// Resolves a short URL to its full link, checking Redis cache first and falling back to PostgreSQL.
     /// </summary>
@@ -27,6 +33,7 @@ public class LinkService(IDistributedCache redis, PgDB db, Counter counter)
     public async Task<Link?> GetLinkAsync(string url)
     {
         var json = await _redis.GetStringAsync(url);
+        Console.WriteLine($"Cache lookup for '{url}': {(json != null ? "Hit" : "Miss")}");
         if (json != null)
         {
             return JsonSerializer.Deserialize<Link>(json);
@@ -36,7 +43,7 @@ public class LinkService(IDistributedCache redis, PgDB db, Counter counter)
         if (link != null)
         {
             json = JsonSerializer.Serialize(link);
-            await _redis.SetStringAsync(url, json);
+            await _redis.SetStringAsync(url, json, CacheOptions);
             return link;
         }
 
@@ -50,12 +57,14 @@ public class LinkService(IDistributedCache redis, PgDB db, Counter counter)
     /// The original URL to be shortened.
     /// </param>
     /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation.</returns>
-    public async Task<Link> CreateLinkAsync(string originalUrl)
+    public async Task<LinkResponseData> CreateLinkAsync(string originalUrl)
     {
-        var shortUrl = Encoder.Encode(_counter.GetNext());
-        var link = new Link { OriginalUrl = originalUrl, ShortUrl = shortUrl };
+        var id = _counter.GetNext();
+        var shortUrl = Encoder.GetEncoded(id);
+        var link = new Link { Id = id, OriginalUrl = originalUrl, ShortUrl = shortUrl };
         _db.Links.Add(link);
-        await _redis.SetStringAsync(shortUrl, JsonSerializer.Serialize(link));
-        return link;
+        await _db.SaveChangesAsync();
+        await _redis.SetStringAsync(shortUrl, JsonSerializer.Serialize(link), CacheOptions);
+        return  new LinkResponseData { OriginalUrl = link.OriginalUrl, ShortUrl = link.ShortUrl };
     }
 }

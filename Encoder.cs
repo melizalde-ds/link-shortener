@@ -1,26 +1,25 @@
+using System.Buffers.Binary;
 using System.Text;
 
 namespace LinkShortener.Utils;
 
 public static class Encoder
 {
-    private const string Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-    public static string Encode(ulong number)
+        private const string Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        private const int Lenght = 5;
+        public static string GetEncoded(ulong number)
     {
-        if (number == 0)
+        var bytes = new byte[8];
+        BinaryPrimitives.WriteUInt64LittleEndian(bytes, number);
+        var base62 = new StringBuilder();
+
+        for (int i = 0; i < Lenght; i++)
         {
-            return Alphabet[0].ToString();
+            var index = bytes[i] % (uint)Chars.Length;
+            base62.Append(Chars[(int)index]);
         }
 
-        var result = new StringBuilder();
-        while (number > 0)
-        {
-            var remainder = (int)(number % (ulong)Alphabet.Length);
-            result.Insert(0, Alphabet[remainder]);
-            number /= (ulong)Alphabet.Length;
-        }
-
-        return result.ToString();
+        return base62.ToString();
     }
+
 }
