@@ -5,9 +5,10 @@ namespace LinkShortener.Utils;
 
 public static class Encoder
 {
-        private const string Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        private const int Lenght = 5;
-        public static string GetEncoded(ulong number)
+    private const string Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    private const int Lenght = 5;
+
+    public static string GetEncoded(ulong number)
     {
         var bytes = new byte[8];
         BinaryPrimitives.WriteUInt64LittleEndian(bytes, number);
@@ -21,5 +22,4 @@ public static class Encoder
 
         return base62.ToString();
     }
-
 }

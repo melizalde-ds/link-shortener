@@ -20,10 +20,10 @@ public class LinkService(IDistributedCache redis, PgDB db, Counter counter)
     private readonly PgDB _db = db;
     private readonly Counter _counter = counter;
 
-    private DistributedCacheEntryOptions CacheOptions => new DistributedCacheEntryOptions
-    {
-        AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1)
-    };
+    private static DistributedCacheEntryOptions CacheOptions =>
+        new DistributedCacheEntryOptions()
+            .SetAbsoluteExpiration(TimeSpan.FromHours(1))
+            .SetSlidingExpiration(TimeSpan.FromMinutes(30));
 
     /// <summary>
     /// Resolves a short URL to its full link, checking Redis cache first and falling back to PostgreSQL.
@@ -33,7 +33,6 @@ public class LinkService(IDistributedCache redis, PgDB db, Counter counter)
     public async Task<Link?> GetLinkAsync(string url)
     {
         var json = await _redis.GetStringAsync(url);
-        Console.WriteLine($"Cache lookup for '{url}': {(json != null ? "Hit" : "Miss")}");
         if (json != null)
         {
             return JsonSerializer.Deserialize<Link>(json);
@@ -61,10 +60,15 @@ public class LinkService(IDistributedCache redis, PgDB db, Counter counter)
     {
         var id = _counter.GetNext();
         var shortUrl = Encoder.GetEncoded(id);
-        var link = new Link { Id = id, OriginalUrl = originalUrl, ShortUrl = shortUrl };
+        var link = new Link
+        {
+            Id = id,
+            OriginalUrl = originalUrl,
+            ShortUrl = shortUrl,
+        };
         _db.Links.Add(link);
         await _db.SaveChangesAsync();
         await _redis.SetStringAsync(shortUrl, JsonSerializer.Serialize(link), CacheOptions);
-        return  new LinkResponseData { OriginalUrl = link.OriginalUrl, ShortUrl = link.ShortUrl };
+        return new LinkResponseData { OriginalUrl = link.OriginalUrl, ShortUrl = link.ShortUrl };
     }
 }
