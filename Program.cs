@@ -17,19 +17,10 @@ builder.Services.AddScoped<LinkService>();
 
 var app = builder.Build();
 
-app.MapGet(
-    "/{url}",
-    async (LinkService linkService, string url) =>
-    {
-        var link = await linkService.GetLinkAsync(url);
-        return link != null ? Results.Ok(link) : Results.NotFound("Short URL not found");
-    }
-);
-
 app.MapGet("/health", () => Results.Ok("Service is healthy"));
 
 app.MapGet(
-    "/redirect/{url}",
+    "/{url}",
     async (LinkService linkService, string url) =>
     {
         var link = await linkService.GetLinkAsync(url);

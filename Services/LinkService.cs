@@ -20,7 +20,6 @@ public class LinkService(IDistributedCache redis, AppDbContext db)
 
     private static DistributedCacheEntryOptions CacheOptions =>
         new DistributedCacheEntryOptions()
-            .SetAbsoluteExpiration(TimeSpan.FromHours(1))
             .SetSlidingExpiration(TimeSpan.FromMinutes(30));
 
     /// <summary>
