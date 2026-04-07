@@ -1,4 +1,18 @@
 services:
+  app:
+    build: .
+    container_name: link-shortener
+    ports:
+      - "5000:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    environment:
+      ConnectionStrings__DefaultConnection: Host=db;Database=shortener;Username=postgres;Password=postgres
+      ConnectionStrings__RedisConnection: redis:6379,abortConnect=false,connectTimeout=5000
   db:
     image: postgres:latest
     container_name: postgres
@@ -24,6 +38,11 @@ services:
     volumes:
       - redis_data:/data
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   redis_data:

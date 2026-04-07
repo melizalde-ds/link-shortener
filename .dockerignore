@@ -1,0 +1,26 @@
+# Build artifacts
+**/bin/
+**/obj/
+**/out/
+
+# Editor and IDE files
+**/.vs/
+**/.vscode/
+**/*.*proj.user
+**/.DS_Store
+
+
+# Git
+**/.git/
+**/.gitignore/
+
+# Environment and secrets
+**/.env
+**/secrets.dev.yaml
+**/values.dev.yaml
+appsettings.Development.json
+
+# Docker
+**/Dockerfile*
+**/.dockerignore
+**/docker-compose*
