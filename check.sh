@@ -3,5 +3,5 @@ set -e
 
 dotnet restore
 dotnet csharpier format .
-dotnet roslynator fix link-shortner.csproj
+dotnet roslynator fix link-shortener.csproj
 dotnet build -warnaserror

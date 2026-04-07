@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace link_shortner.Migrations
+namespace link_shortener.Migrations
 {
     /// <inheritdoc />
     public partial class AddLinkTableAndSequence : Migration

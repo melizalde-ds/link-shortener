@@ -20,4 +20,4 @@ WORKDIR /app
 
 COPY --from=build /app/out ./
 
-ENTRYPOINT ["dotnet", "link-shortner.dll"]
+ENTRYPOINT ["dotnet", "link-shortener.dll"]
