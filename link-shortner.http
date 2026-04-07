@@ -1,6 +1,0 @@
-@link_shortner_HostAddress = http://localhost:5059
-
-GET {{link_shortner_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
